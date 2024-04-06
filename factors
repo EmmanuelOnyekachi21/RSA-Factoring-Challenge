@@ -1,0 +1,57 @@
+#!/usr/bin/python3
+"""0.Factorize all the things!"""
+
+import sys
+import math
+
+
+def factorize(number):
+    """Factorize provided number into a product of two smaller numbers."""
+
+    if (number % 2) == 0:
+        divisor = 2
+        quotient = number // divisor
+        print(f"{number}={quotient}*{divisor}")
+    else:
+
+        # Get root of the dividend
+        root = int(math.sqrt(number))
+
+        # Add 1 to root to ensure that the root is included in the range
+        root += 1
+
+        # Iterate over odd number since no even number would be prime.
+        for i in range(3, root, +2):
+            if number % i == 0:
+                print(f"{number}={number // i}*{i}")
+                return
+            if number % (root + i) == 0:
+                print(f"{number}={number // (root + i)}*{root + i}")
+                return
+            if number % (root - i) == 0:
+                print(f"{number}={number // (root - i)}*{root - i}")
+                return
+
+
+def factor(filename):
+    """Opens file with test numbers and call the `factorize` fxn on them."""
+
+    with open(filename) as file:
+        for line in file:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                number = int(line)
+                result = factorize(number)
+            except ValueError:
+                print(f"Skipping Invalid Value: {line}")
+
+
+# Checks if the script is being run directly (not imported as a module)
+if __name__ == "__main__":
+# Ensures that it receives the correct number of command-line arguments.
+    if len(sys.argv[:]) != 2:
+        print(f"Usage: factors <file>")
+    else:
+        factor(sys.argv[1])
